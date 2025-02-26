@@ -4,14 +4,14 @@ import Layout from "./components/ui/Layout";
 import Products from "./pages/Products";
 import Home from "./pages/Home";
 import { useCallback, useEffect, useState } from "react";
-import { App_Context } from "./Context";
+import { AppContextProvider } from "./AppContext.jsx";
+
 import Cart from "./pages/Cart";
 
 export const API_URL = "https://api.sampleapis.com/coffee/hot";
 
 function App() {
   const [coffeeData, setCoffeeData] = useState([]);
-
 
   useEffect(() => {
     fetch(API_URL)
@@ -22,10 +22,8 @@ function App() {
       });
   }, []);
 
-
-
   return (
-    <App_Context.Provider value={{ coffeeData }}>
+    <AppContextProvider>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
@@ -33,9 +31,8 @@ function App() {
           <Route path="cart" element={<Cart />} />
         </Route>
       </Routes>
-    </App_Context.Provider>
+    </AppContextProvider>
   );
 }
 
 export default App;
-

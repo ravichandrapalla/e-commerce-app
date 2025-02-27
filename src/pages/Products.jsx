@@ -1,12 +1,9 @@
 import { useContext, useEffect } from "react";
-
+import { useCoffeeData } from "../queries/useCoffeData";
 import ProductCard from "../components/ui/ProductCard";
 
-export default function Products({ coffeeData }) {
-  // const { coffeeData } = useContext(App_Context);
-  // useEffect(() => {
-  //   console.log(cartItems);
-  // }, []);
+export default function Products() {
+  const { isLoading, data: coffeeData, error } = useCoffeeData();
   const handleAddCart = (item) => {
     try {
       // Get existing cart data from localStorage and parse it safely
@@ -36,20 +33,28 @@ export default function Products({ coffeeData }) {
       console.error("Error handling cart data:", error);
     }
   };
+  if (error) {
+    console.log(error.message);
+    return;
+  }
 
   return (
     <div>
       <h1 className="text-3xl  mb-6">Products</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {coffeeData?.map((coffeeItem) => {
-          return (
-            <ProductCard
-              coffeeItem={coffeeItem}
-              setCart={handleAddCart}
-              key={coffeeItem.id}
-            />
-          );
-        })}
+        {isLoading ? (
+          <p>Loading....</p>
+        ) : (
+          coffeeData?.map((coffeeItem) => {
+            return (
+              <ProductCard
+                coffeeItem={coffeeItem}
+                setCart={handleAddCart}
+                key={coffeeItem.id}
+              />
+            );
+          })
+        )}
       </div>
     </div>
   );

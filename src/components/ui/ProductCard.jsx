@@ -21,7 +21,7 @@ export default function ProductCard({ coffeeItem, setCart }) {
         </p>
         <button
           className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300"
-          // onClick={() => setCart(coffeeItem)}
+          onClick={() => setCart(coffeeItem)}
         >
           Add to Cart
         </button>

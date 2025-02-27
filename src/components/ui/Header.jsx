@@ -17,7 +17,7 @@ const Header = () => {
       <div className="container mx-auto flex justify-between items-center px-4">
         <span className="text-2xl font-bold">My E-commerce</span>
         <nav>
-          <ul className="flex space-x-6">
+          <ul className="flex space-x-6 text-center items-center">
             <li>
               <a href="/" className="hover:text-gray-300">
                 Home

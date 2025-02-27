@@ -2,25 +2,54 @@ import { useContext, useEffect } from "react";
 
 import ProductCard from "../components/ui/ProductCard";
 
-export default function Products() {
+export default function Products({ coffeeData }) {
   // const { coffeeData } = useContext(App_Context);
   // useEffect(() => {
   //   console.log(cartItems);
   // }, []);
+  const handleAddCart = (item) => {
+    try {
+      // Get existing cart data from localStorage and parse it safely
+      const prevCart = JSON.parse(localStorage.getItem("mycart")) || [];
+
+      // Ensure prevCart is an array (to avoid issues if storage was corrupted)
+      if (!Array.isArray(prevCart)) {
+        console.error(
+          "Invalid cart data found in localStorage. Resetting cart."
+        );
+        localStorage.setItem("mycart", JSON.stringify([]));
+        return;
+      }
+
+      // Add the new item
+      const newCart = [...prevCart, item];
+
+      // Store updated cart in localStorage
+      localStorage.setItem("mycart", JSON.stringify(newCart));
+
+      // Retrieve and log the updated cart
+      console.log(
+        "my cart value is",
+        JSON.parse(localStorage.getItem("mycart"))
+      );
+    } catch (error) {
+      console.error("Error handling cart data:", error);
+    }
+  };
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">Products</h1>
+      <h1 className="text-3xl  mb-6">Products</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {/* {coffeeData?.map((coffeeItem) => {
+        {coffeeData?.map((coffeeItem) => {
           return (
             <ProductCard
               coffeeItem={coffeeItem}
-              // setCart={setCartItems}
+              setCart={handleAddCart}
               key={coffeeItem.id}
             />
           );
-        })} */}
+        })}
       </div>
     </div>
   );

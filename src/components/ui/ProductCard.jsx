@@ -1,9 +1,10 @@
-export default function ProductCard({ coffeeItem, setCart }) {
+export default function ProductCard({ coffeeItem, setCart, cart }) {
   const truncateDescription = (description, maxLength) => {
     if (description.length <= maxLength) return description;
     return description.substring(0, maxLength) + "...";
   };
-
+  // const cartItems = JSON.parse(localStorage.getItem("mycart"));
+  const isCartItem = cart?.find((item) => item.id == coffeeItem.id);
   return (
     <div
       key={coffeeItem.id}
@@ -20,10 +21,10 @@ export default function ProductCard({ coffeeItem, setCart }) {
           {truncateDescription(coffeeItem.description, 50)}
         </p>
         <button
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300"
+          className={`text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300`}
           onClick={() => setCart(coffeeItem)}
         >
-          Add to Cart
+          {isCartItem ? "Added" : "Add to Cart"}
         </button>
       </div>
     </div>

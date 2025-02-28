@@ -13,7 +13,14 @@ export default function ProductCard({ coffeeItem }) {
 
   const dispatch = useDispatch();
   return (
-    <div className="border p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+    <div className="relative border p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+      {isCartItem && (
+        <div className="absolute top-0 left-0">
+          <p class="border bg-green-100 text-green-800 text-xs font-medium px-3 py-1.5 rounded-lg dark:bg-green-900 dark:text-green-300">
+            Added
+          </p>
+        </div>
+      )}
       <img
         src={coffeeItem.image}
         alt={coffeeItem.title}
@@ -26,18 +33,19 @@ export default function ProductCard({ coffeeItem }) {
         </p>
       </div>
       <div
-        className={`flex items-center ${
-          isCartItem ? "justify-between" : "justify-center"
+        className={`flex items-center justify-center
         }`}
       >
-        <button
-          className={`${
-            isCartItem ? "bg-green-500" : "bg-blue-500"
-          } text-white py-2 px-4 rounded  transition-colors duration-300`}
-          onClick={() => dispatch(addCartItem(coffeeItem))}
-        >
-          {isCartItem ? "Added" : "Add to Cart"}
-        </button>
+        {!isCartItem && (
+          <button
+            className={`${
+              isCartItem ? "bg-green-500" : "bg-blue-500"
+            } text-white py-2 px-4 rounded  transition-colors duration-300`}
+            onClick={() => dispatch(addCartItem(coffeeItem))}
+          >
+            Add to Cart
+          </button>
+        )}
         {isCartItem && (
           <button
             className={`bg-red-500 text-white py-2 px-4 rounded transition-colors duration-300`}

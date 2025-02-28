@@ -1,3 +1,6 @@
+import { useDispatch } from "react-redux";
+import { addCartItem } from "../../redux/slices";
+
 export default function ProductCard({ coffeeItem, setCart, cart }) {
   const truncateDescription = (description, maxLength) => {
     if (description.length <= maxLength) return description;
@@ -5,6 +8,8 @@ export default function ProductCard({ coffeeItem, setCart, cart }) {
   };
   // const cartItems = JSON.parse(localStorage.getItem("mycart"));
   const isCartItem = cart?.find((item) => item.id == coffeeItem.id);
+
+  const dispatch = useDispatch();
   return (
     <div
       key={coffeeItem.id}
@@ -22,7 +27,7 @@ export default function ProductCard({ coffeeItem, setCart, cart }) {
         </p>
         <button
           className={`text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300`}
-          onClick={() => setCart(coffeeItem)}
+          onClick={() => dispatch(addCartItem(coffeeItem))}
         >
           {isCartItem ? "Added" : "Add to Cart"}
         </button>

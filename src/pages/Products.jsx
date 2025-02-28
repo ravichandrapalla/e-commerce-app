@@ -23,6 +23,7 @@ export default function Products() {
 
       // Add the new item
       const newCart = [...prevCart, item];
+      
 
       // Store updated cart in localStorage
       localStorage.setItem("mycart", JSON.stringify(newCart));

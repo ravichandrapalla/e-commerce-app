@@ -1,8 +1,14 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../../AppContext";
 
 const Header = () => {
   const { theme, setTheme } = useContext(AppContext);
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const cartItems = JSON.parse(localStorage.getItem("mycart")) || [];
+    setCartCount(cartItems.length);
+  }, []);
 
   const toggleTheme = () => {
     if (theme == "light") {
@@ -28,10 +34,15 @@ const Header = () => {
                 Products
               </a>
             </li>
-            <li>
+            <li className="relative">
               <a href="/cart" className="hover:text-gray-300">
                 Cart
               </a>
+              {cartCount > 0 && (
+                <span className="absolute top-0 inline-block w-4 h-4 bg-red-600 text-white text-xs  rounded-full text-center">
+                  {cartCount}
+                </span>
+              )}
             </li>
             <li>
               <button

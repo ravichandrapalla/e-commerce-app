@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { addCartItem } from "../../redux/slices";
+import { addCartItem } from "../../redux/cartSlice";
 
 export default function ProductCard({ coffeeItem, setCart, cart }) {
   const truncateDescription = (description, maxLength) => {

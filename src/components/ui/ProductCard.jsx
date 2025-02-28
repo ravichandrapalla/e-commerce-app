@@ -1,13 +1,14 @@
-import { useDispatch } from "react-redux";
-import { addCartItem } from "../../redux/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addCartItem, removeCartItem } from "../../redux/slices/cartSlice";
 
 export default function ProductCard({ coffeeItem, setCart, cart }) {
+  const cartStore = useSelector((state) => state.cartItems);
   const truncateDescription = (description, maxLength) => {
     if (description.length <= maxLength) return description;
     return description.substring(0, maxLength) + "...";
   };
   // const cartItems = JSON.parse(localStorage.getItem("mycart"));
-  const isCartItem = cart?.find((item) => item.id == coffeeItem.id);
+  const isCartItem = cartStore?.find((item) => item.id == coffeeItem.id);
 
   const dispatch = useDispatch();
   return (
@@ -26,11 +27,19 @@ export default function ProductCard({ coffeeItem, setCart, cart }) {
           {truncateDescription(coffeeItem.description, 50)}
         </p>
         <button
-          className={`text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300`}
+          className={`text-white py-2 px-4 rounded bg-green-600 hover:bg-blue-600 transition-colors duration-300`}
           onClick={() => dispatch(addCartItem(coffeeItem))}
         >
           {isCartItem ? "Added" : "Add to Cart"}
         </button>
+        {isCartItem && (
+          <button
+            className={`text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300`}
+            onClick={() => dispatch(removeCartItem(coffeeItem))}
+          >
+            Remove
+          </button>
+        )}
       </div>
     </div>
   );

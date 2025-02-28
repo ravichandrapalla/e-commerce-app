@@ -1,14 +1,16 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import { AppContext } from "../../AppContext";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const { theme, setTheme } = useContext(AppContext);
-  const [cartCount, setCartCount] = useState(0);
+  const cartCount = useSelector((state) => state?.cartItems?.length);
+  // const [cartCount, setCartCount] = useState(0);
 
-  useEffect(() => {
-    const cartItems = JSON.parse(localStorage.getItem("mycart")) || [];
-    setCartCount(cartItems.length);
-  }, []);
+  // useEffect(() => {
+  //   const cartItems = JSON.parse(localStorage.getItem("mycart")) || [];
+  //   setCartCount(cartItems.length);
+  // }, []);
 
   const toggleTheme = () => {
     if (theme == "light") {

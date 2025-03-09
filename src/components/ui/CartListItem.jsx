@@ -1,4 +1,6 @@
-export default function CartListItem({ item }) {
+import React from "react";
+
+const CartListItem = React.memo(({ item }) => {
   return (
     <div className="flex items-center justify-between p-4 border-b">
       <img
@@ -13,4 +15,6 @@ export default function CartListItem({ item }) {
       <span className="text-lg font-bold">${item.price ?? "0"}</span>
     </div>
   );
-}
+});
+
+export default CartListItem;

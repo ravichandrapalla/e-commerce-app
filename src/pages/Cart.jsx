@@ -1,14 +1,14 @@
-import { useContext } from "react";
-
-import CartListItem from "../components/ui/CartListItem";
+import { useContext, lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart } from "../redux/slices/cartSlice";
+const CartListItem = lazy(() => import("../components/ui/CartListItem"));
 
 export default function Cart() {
   const dispatch = useDispatch();
-  const cartItems = JSON.parse(localStorage.getItem("mycart"));
-  const cartStore = useSelector((state) => state.cartItems);
-  console.log(cartItems);
+  const cartStore = useSelector(
+    (state) => state.cartItems,
+    (prev, next) => prev === next
+  );
 
   return (
     <div>
@@ -18,11 +18,13 @@ export default function Cart() {
       </div>
 
       <div className="bg-white shadow-md rounded-lg p-6">
-        {cartStore?.length > 0 ? (
-          cartStore?.map((item) => <CartListItem key={item.id} item={item} />)
-        ) : (
-          <p className="text-gray-600">Your cart is empty.</p>
-        )}
+        <Suspense fallback={<p>Loading...</p>}>
+          {cartStore?.length > 0 ? (
+            cartStore?.map((item) => <CartListItem key={item.id} item={item} />)
+          ) : (
+            <p className="text-gray-600">Your cart is empty.</p>
+          )}
+        </Suspense>
       </div>
     </div>
   );

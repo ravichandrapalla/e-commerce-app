@@ -3,12 +3,19 @@ import { useQuery } from "@tanstack/react-query";
 export const API_URL = "https://api.sampleapis.com/coffee/hot";
 
 async function getCoffeeData() {
+  const controller = new AbortController();
+  const { signal } = controller;
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(API_URL, { signal });
     const data = await response.json();
     return data;
-  } catch {
+  } catch (error) {
+    if (error.name === "AbortError") {
+      alert("Request was aborted");
+    }
     console.log("api call happened");
+  } finally {
+    controller.abort();
   }
 }
 

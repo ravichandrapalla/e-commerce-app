@@ -1,12 +1,23 @@
-import { useContext, useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { useCoffeeData } from "../queries/useCoffeData";
 import ProductCard from "../components/ui/ProductCard";
+import { useDebounce } from "../custom-hooks/getDebouncedFn";
 
 export default function Products() {
   const { isLoading, data: coffeeData, error } = useCoffeeData();
+  const [filter, setFilter] = useState("");
   const [cart, setCart] = useState(
     JSON.parse(localStorage.getItem("mycart")) || []
   );
+  const callDebouncdFn = useDebounce(setFilter, 3000);
+  const getFilteredProducts = useMemo(() => {
+    console.log("function read");
+    const filteredProducts = filter
+      ? coffeeData.filter((item) => item.title.toLowerCase().includes(filter))
+      : coffeeData;
+    return filteredProducts;
+  }, [filter, coffeeData]);
+
   const handleAddCart = (item) => {
     try {
       // Get existing cart data from localStorage and parse it safely
@@ -26,7 +37,7 @@ export default function Products() {
 
       // Store updated cart in localStorage
       localStorage.setItem("mycart", JSON.stringify(newCart));
-      setCart([...newCart]);
+      setCart((prevCart) => [...prevCart, item]);
 
       // Retrieve and log the updated cart
       console.log(
@@ -44,12 +55,21 @@ export default function Products() {
 
   return (
     <div>
-      <h1 className="text-3xl  mb-6">Products</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl  mb-6">Products</h1>
+        <input
+          type="text"
+          placeholder="search for products"
+          className="border border-gray-500 rounded-md p-1 px-2"
+          onChange={(e) => callDebouncdFn(e.target.value)}
+        />
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {isLoading ? (
           <p>Loading....</p>
         ) : (
-          coffeeData?.map((coffeeItem) => {
+          getFilteredProducts?.map((coffeeItem) => {
             return (
               <ProductCard
                 coffeeItem={coffeeItem}
